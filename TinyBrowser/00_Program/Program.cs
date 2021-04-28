@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
-using System.Text;
+
 
 public static class Program {
     static void Main(string[] arguments) {
@@ -14,19 +13,18 @@ public static class Program {
             StreamReader streamReader = new StreamReader(networkStream);
 
             string requestHttp = "";
-            requestHttp += "GET / HTTP/1.0\r\n";
-            requestHttp += "Host: www.acme.com\r\n";
-            requestHttp += "\r\n";
-
+            requestHttp += "GET / HTTP/1.1\r\n";
+            requestHttp += "Host: www.acme.com\r\n\r\n";
+            
             streamWriter.Write(requestHttp);
             streamWriter.Flush();
 
-            Console.WriteLine("[Reading website...]");
+            Console.WriteLine("Reading website...");
             Console.WriteLine(streamReader.ReadToEnd());
         }
 
         tcpClient.Close();
-        Console.WriteLine("[Done reading website!]");
+        Console.WriteLine("Done reading website\nPress any key to exit");
         Console.ReadKey();
     }
 }
