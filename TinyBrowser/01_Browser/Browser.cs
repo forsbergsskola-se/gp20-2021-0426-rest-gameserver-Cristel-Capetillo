@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace TinyBrowser._01_Browser {
     public class Browser {
-        TcpClient tcpClient = new TcpClient();
+        readonly TcpClient tcpClient = new TcpClient();
         string hostName = "www.acme.com";
         int port = 80;
 
