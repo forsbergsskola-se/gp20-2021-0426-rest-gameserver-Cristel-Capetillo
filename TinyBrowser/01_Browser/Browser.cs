@@ -24,6 +24,7 @@ namespace TinyBrowser._01_Browser {
             requestedData += "GET / HTTP/1.1\r\n";
             requestedData += "Host: www.acme.com\r\n\r\n";
             
+            
             string FilteringStrings(string sourceStrings, char characterDivider) {
                 var resultingText = requestedData;
                 var shouldBeDisplayed = false;
@@ -40,16 +41,20 @@ namespace TinyBrowser._01_Browser {
                 return resultingText;
             }
             
+            
             var hyperlinks = Regex.Matches(requestedData, @"<(a|link).*?href=(""|')(.+?)(""|').*?>").Select(matching => matching.Value).ToArray();
             var linksHeaders = Regex.Matches(requestedData, @"\"">(.*?)\</a>").Select(matching => matching.Value).ToArray();
+            
 
             foreach (var linkHeader in linksHeaders) {
                 Console.WriteLine(linkHeader);
             }
 
+            
             foreach (var hyperlink in hyperlinks) {
                 Console.WriteLine(FilteringStrings(hyperlink,'"'));
             }
+            
             
             streamWriter.Write(requestedData);
             streamWriter.Flush();
