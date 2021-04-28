@@ -23,6 +23,23 @@ namespace TinyBrowser._01_Browser {
             string requestedData = "";
             requestedData += "GET / HTTP/1.1\r\n";
             requestedData += "Host: www.acme.com\r\n\r\n";
+            
+            string FilteringStrings(string sourceStrings, char characterDivider) {
+                var resultingText = requestedData;
+                var shouldBeDisplayed = false;
+
+                foreach (var character in sourceStrings) {
+                    if (character == characterDivider) {
+                        shouldBeDisplayed = !shouldBeDisplayed;
+                    }
+
+                    if (shouldBeDisplayed && character != '"') {
+                        resultingText += character;
+                    }
+                }
+                return resultingText;
+            }
+            
             var hyperlinks = Regex.Matches(requestedData, @"<(a|link).*?href=(""|')(.+?)(""|').*?>").Select(matching => matching.Value).ToArray();
             var linksHeaders = Regex.Matches(requestedData, @"\"">(.*?)\</a>").Select(matching => matching.Value).ToArray();
 
@@ -40,24 +57,7 @@ namespace TinyBrowser._01_Browser {
             Console.WriteLine("Reading website...");
             Console.WriteLine(streamReader.ReadToEnd());
         }
-        
 
-        public string FilteringStrings(string sourceStrings, char characterDivider) {
-            var resultingText = " ";
-            var shouldBeAdded = false;
-
-            foreach (var character in sourceStrings) {
-                if (character == characterDivider) {
-                    shouldBeAdded = !shouldBeAdded;
-                }
-
-                if (shouldBeAdded && character != '"') {
-                    resultingText += character;
-                }
-            }
-            return resultingText;
-        }
-        
 
         public void StopReadingWebsite() {
             tcpClient.Close();

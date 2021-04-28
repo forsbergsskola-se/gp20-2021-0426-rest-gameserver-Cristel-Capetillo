@@ -11,7 +11,6 @@ class Program {
         
         browser.ClientConnect();
         browser.ReadWebsite();
-        browser.FilteringStrings(" ", '"');
         browser.StopReadingWebsite();
     }
 }
