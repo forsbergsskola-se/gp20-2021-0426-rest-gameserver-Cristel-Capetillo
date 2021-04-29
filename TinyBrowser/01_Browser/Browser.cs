@@ -33,7 +33,7 @@ namespace TinyBrowser._01_Browser {
         }
 
 
-        public void StopReadingWebsite() {
+        public void StopReadWebsite() {
             tcpClient.Close();
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Done reading website\nPress any key to exit");

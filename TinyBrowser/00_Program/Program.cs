@@ -8,9 +8,8 @@ class Program {
         
         browser.ClientConnect();
         browser.ReadWebsite();
-        browser.StopReadingWebsite();
+        browser.StopReadWebsite();
     }
-    
 }
 
 
