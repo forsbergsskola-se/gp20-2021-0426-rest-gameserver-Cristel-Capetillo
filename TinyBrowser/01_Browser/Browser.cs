@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text.RegularExpressions;
 
 namespace TinyBrowser._01_Browser {
     public class Browser {
@@ -23,21 +21,26 @@ namespace TinyBrowser._01_Browser {
             string requestedData = "";
             requestedData += "GET / HTTP/1.1\r\n";
             requestedData += "Host: www.acme.com\r\n\r\n";
-            
+           
             
             streamWriter.Write(requestedData);
             streamWriter.Flush();
 
-            Console.WriteLine("Reading website...");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("Displaying website contents: ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(streamReader.ReadToEnd());
         }
 
 
         public void StopReadingWebsite() {
             tcpClient.Close();
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Done reading website\nPress any key to exit");
             Console.ReadKey();
         }
-
+        
+        
+        
     }
 }

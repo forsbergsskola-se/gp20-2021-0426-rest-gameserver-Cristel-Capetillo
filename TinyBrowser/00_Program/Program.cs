@@ -1,17 +1,16 @@
-﻿using System;
-using System.IO;
-using System.Net.Sockets;
-using TinyBrowser._01_Browser;
+﻿using TinyBrowser._01_Browser;
 
 
 class Program {
     
-    static void Main(string[] arguments) {
+    static void Main(string[] args) {
         Browser browser = new Browser();
         
         browser.ClientConnect();
         browser.ReadWebsite();
         browser.StopReadingWebsite();
     }
+    
 }
+
 
