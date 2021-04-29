@@ -39,8 +39,5 @@ namespace TinyBrowser._01_Browser {
             Console.WriteLine("Done reading website\nPress any key to exit");
             Console.ReadKey();
         }
-        
-        
-        
     }
 }
