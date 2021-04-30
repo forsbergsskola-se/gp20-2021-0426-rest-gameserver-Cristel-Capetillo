@@ -7,7 +7,7 @@ class Program {
         Browser browser = new Browser();
         
         browser.ClientConnect();
-        browser.ReadWebsite();
+        browser.RequestAndReadWebsite();
         browser.FindTextBetweenTags();
         browser.StopReadWebsite();
     }

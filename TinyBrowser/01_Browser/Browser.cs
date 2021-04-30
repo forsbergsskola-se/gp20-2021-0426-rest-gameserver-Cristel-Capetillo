@@ -18,7 +18,7 @@ namespace TinyBrowser._01_Browser {
         }
         
         
-        public void ReadWebsite() {
+        public void RequestAndReadWebsite() {
             var networkStream = tcpClient.GetStream();
             var streamWriter = new StreamWriter(networkStream);
             
@@ -91,7 +91,7 @@ namespace TinyBrowser._01_Browser {
         public void StopReadWebsite() {
             tcpClient.Close();
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Website's content displayed\nPress any key to exit");
+            Console.WriteLine("All website's content displayed\nPress any key to exit");
             Console.ReadKey();
         }
         
