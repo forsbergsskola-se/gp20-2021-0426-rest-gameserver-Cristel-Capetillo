@@ -112,6 +112,7 @@ namespace TinyBrowser._01_Browser {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine($"You have typed {userNumberChoice}: {links[userNumberChoice].displayLinksText}.\nConfirm you want to go to that link by pressing any key");
             Console.ReadKey();
+            DisplayWebsitesLinks();
         }
         
         
