@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TinyBrowser._02_LinksAndTitles;
 
 namespace TinyBrowser._01_Browser {
@@ -12,9 +13,6 @@ namespace TinyBrowser._01_Browser {
         string uri = "/";
         int port = 80;
         static AllLinksAndTitles[] links;
-        static readonly List<AllLinksAndTitles> BrowseThroughPages = new List<AllLinksAndTitles>();
-        static string path = "/";
-        
 
         public void ClientConnect() {
             tcpClient.Connect(host, port);
@@ -65,7 +63,6 @@ namespace TinyBrowser._01_Browser {
                     title = response[titleIndexStarts..titleIndexEnds];
                 }
             }
-            
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Website's title: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -105,7 +102,6 @@ namespace TinyBrowser._01_Browser {
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("The number you typed is not on the list\nPlease type another one");
                 Console.ReadLine();
-                DisplayWebsitesLinks();
             }
 
             if (links.Length < 1) {
