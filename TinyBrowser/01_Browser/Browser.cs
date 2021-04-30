@@ -134,7 +134,7 @@ namespace TinyBrowser._01_Browser {
                     filterAfterHyperlink.Substring(filteredDataStartsAt,(filteredDataEndsAt - filteredDataStartsAt))
                     .Replace("<b>", string.Empty).Replace("</b>", string.Empty);
                 if (dataToDisplay.StartsWith("<img")){
-                    dataToDisplay = String.Empty;
+                    dataToDisplay = string.Empty;
                 }
                 allLinksList.Add(new AllLinksAndTitles{
                     links = new string(hyperlink),
