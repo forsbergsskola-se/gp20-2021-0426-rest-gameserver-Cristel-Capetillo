@@ -86,12 +86,29 @@ namespace TinyBrowser._01_Browser {
                 Console.WriteLine("No links found");
             }
         }
+
+        public void ReadUserInput() {
+            var userInputVerfied = true;
+
+            do {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("Type a number from 0 to 68 to go to that link");
+                userInputVerfied = int.TryParse(Console.ReadLine(), out var userNumberChoice);
+                if (userNumberChoice >= 0 && userNumberChoice <= links.Length) continue;
+                userInputVerfied = false;
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("The number you typed is not on the list\nPlease type another one");
+                Console.ReadLine();
+                DisplayWebsitesLinks();
+            } while (!userInputVerfied);
+        }
         
         
         public void StopReadWebsite() {
             tcpClient.Close();
+            tcpClient.Dispose();
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("All website's content displayed\nPress any key to exit");
+            Console.WriteLine("Press any key to exit");
             Console.ReadKey();
         }
         
@@ -115,7 +132,7 @@ namespace TinyBrowser._01_Browser {
                     filterAfterHyperlink.Substring(filteredDataStartsAt,(filteredDataEndsAt - filteredDataStartsAt))
                     .Replace("<b>", string.Empty).Replace("</b>", string.Empty);
                 if (dataToDisplay.StartsWith("<img")){
-                    dataToDisplay = "Image";
+                    dataToDisplay = "Images";
                 }
                 allLinksList.Add(new AllLinksAndTitles{
                     links = new string(hyperlink),
