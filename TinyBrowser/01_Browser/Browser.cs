@@ -11,7 +11,6 @@ namespace TinyBrowser._01_Browser {
         string host = "www.acme.com";
         string uri = "/";
         int port = 80;
-        
         static AllLinksAndTitles[] links;
 
         public void ClientConnect() {
@@ -46,10 +45,20 @@ namespace TinyBrowser._01_Browser {
             var networkStream = tcpClient.GetStream();
             var streamReader = new StreamReader(networkStream);
             var response = streamReader.ReadToEnd();
+
+            DisplayWebsiteTitle(response);
             
+            links = FilterAllLinksWithTitles(response).ToArray();
+            
+            DisplayAllLinks();
+        }
+
+        
+        void DisplayWebsiteTitle(string response) {
             var titleTag = "<title>";
             var titleIndexStarts = response.IndexOf(titleTag);
             string title = string.Empty;
+            
             if (titleIndexStarts != -1) {
                 titleIndexStarts += titleTag.Length;
                 var titleIndexEnds = response.IndexOf("</title>");
@@ -57,45 +66,11 @@ namespace TinyBrowser._01_Browser {
                     title = response[titleIndexStarts..titleIndexEnds];
                 }
             }
+            
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Website's title: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(title);
-
-           
-            links = FilterAllLinksWithTitles(response).ToArray();
-            DisplayAllLinks();
-        }
-        
-        
-        static IEnumerable<AllLinksAndTitles> FilterAllLinksWithTitles(string response) {
-            var linkTag = "<a href=\"";
-            var quotationMark = '"';
-            var linkIndexStarts = '>';
-            var linkIndexEnds = "</a>";
-            
-            var allLinksList = new List<AllLinksAndTitles>();
-                
-            var arrayFilter = response.Split(linkTag);
-            arrayFilter = arrayFilter.Skip(1).ToArray();
-
-            foreach (var dataFiltered in arrayFilter){
-                var hyperlink = dataFiltered.TakeWhile(symbol => symbol != quotationMark).ToArray();
-                var filterAfterHyperlink = dataFiltered[hyperlink.Length..];
-                var filteredDataStartsAt = filterAfterHyperlink.IndexOf(linkIndexStarts) + 1;
-                var filteredDataEndsAt = filterAfterHyperlink.IndexOf(linkIndexEnds, StringComparison.Ordinal);
-                var dataToDisplay = 
-                    filterAfterHyperlink.Substring(filteredDataStartsAt,(filteredDataEndsAt - filteredDataStartsAt))
-                    .Replace("<b>", string.Empty).Replace("</b>", string.Empty);
-                if (dataToDisplay.StartsWith("<img")){
-                    dataToDisplay = "Image";
-                }
-                allLinksList.Add(new AllLinksAndTitles{
-                    links = new string(hyperlink),
-                    displayLinksText = new string(dataToDisplay)
-                });
-            }
-            return allLinksList;
         }
         
         
@@ -118,8 +93,38 @@ namespace TinyBrowser._01_Browser {
         public void StopReadWebsite() {
             tcpClient.Close();
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Website content displayed\nPress any key to exit");
+            Console.WriteLine("Website's content displayed\nPress any key to exit");
             Console.ReadKey();
+        }
+        
+        
+        static IEnumerable<AllLinksAndTitles> FilterAllLinksWithTitles(string response) {
+            var linkTag = "<a href=\"";
+            var quotationMark = '"';
+            var linkIndexStarts = '>';
+            var linkIndexEnds = "</a>";
+            
+            var allLinksList = new List<AllLinksAndTitles>();
+            var arrayFilter = response.Split(linkTag);
+            arrayFilter = arrayFilter.Skip(1).ToArray();
+            
+            foreach (var dataFiltered in arrayFilter){
+                var hyperlink = dataFiltered.TakeWhile(symbol => symbol != quotationMark).ToArray();
+                var filterAfterHyperlink = dataFiltered[hyperlink.Length..];
+                var filteredDataStartsAt = filterAfterHyperlink.IndexOf(linkIndexStarts) + 1;
+                var filteredDataEndsAt = filterAfterHyperlink.IndexOf(linkIndexEnds, StringComparison.Ordinal);
+                var dataToDisplay = 
+                    filterAfterHyperlink.Substring(filteredDataStartsAt,(filteredDataEndsAt - filteredDataStartsAt))
+                    .Replace("<b>", string.Empty).Replace("</b>", string.Empty);
+                if (dataToDisplay.StartsWith("<img")){
+                    dataToDisplay = "Image";
+                }
+                allLinksList.Add(new AllLinksAndTitles{
+                    links = new string(hyperlink),
+                    displayLinksText = new string(dataToDisplay)
+                });
+            }
+            return allLinksList;
         }
     }
 }
