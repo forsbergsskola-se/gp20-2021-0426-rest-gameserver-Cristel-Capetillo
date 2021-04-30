@@ -8,6 +8,7 @@ class Program {
         
         browser.ClientConnect();
         browser.ReadWebsite();
+        browser.FindTextBetweenTags();
         browser.StopReadWebsite();
     }
 }
