@@ -12,6 +12,9 @@ namespace TinyBrowser._01_Browser {
         string uri = "/";
         int port = 80;
         static AllLinksAndTitles[] links;
+        static readonly List<AllLinksAndTitles> BrowseThroughPages = new List<AllLinksAndTitles>();
+        static string path = "/";
+        
 
         public void ClientConnect() {
             tcpClient.Connect(host, port);
@@ -73,10 +76,10 @@ namespace TinyBrowser._01_Browser {
         void DisplayWebsitesLinks(){
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Displaying all links on the website: ");
-            if (links != null){
+            if (links.Length > 0){
                 for (var i = 0; i < links.Length; i++){
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"{i}: {links[i].displayLinksText} ({links[i].links})");
+                    Console.WriteLine($"{i}: {links[i].displayLinksText} ({links[i].hyperlinks})");
                 }   
             }
             else{
@@ -86,21 +89,33 @@ namespace TinyBrowser._01_Browser {
         }
 
         public void ReadUserInput() {
-            var userInputVerfied = true;
-
-            do {
+            var userInputIsValid = false;
+            var userNumberChoice = 0;
+            
+            while(!userInputIsValid && links.Length > 0) {
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("Type a number from 0 to 68 to go to that link");
-                userInputVerfied = int.TryParse(Console.ReadLine(), out var userNumberChoice);
-                if (userNumberChoice >= 0 && userNumberChoice <= links.Length) {
+                
+                userInputIsValid = int.TryParse(Console.ReadLine(), out userNumberChoice);
+                if (userNumberChoice >= 0 && userNumberChoice <= links.Length -1) {
+                    userInputIsValid = true;
                     continue;
                 }
-                userInputVerfied = false;
+                userInputIsValid = false;
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("The number you typed is not on the list\nPlease type another one");
                 Console.ReadLine();
                 DisplayWebsitesLinks();
-            } while (!userInputVerfied);
+            }
+
+            if (links.Length < 1) {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("This page has no links");
+            }
+            
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine($"You have typed {userNumberChoice}: {links[userNumberChoice].displayLinksText}.\nConfirm you want to go to that link by pressing any key");
+            Console.ReadKey();
         }
         
         
@@ -119,6 +134,7 @@ namespace TinyBrowser._01_Browser {
             var linkIndexStarts = '>';
             var linkIndexEnds = "</a>";
             var allLinksList = new List<AllLinksAndTitles>();
+            
             var arrayFilter = response.Split(linkTag);
             arrayFilter = arrayFilter.Skip(1).ToArray();
             
@@ -134,7 +150,7 @@ namespace TinyBrowser._01_Browser {
                     dataToDisplay = string.Empty;
                 }
                 allLinksList.Add(new AllLinksAndTitles{
-                    links = new string(hyperlink),
+                    hyperlinks = new string(hyperlink),
                     displayLinksText = new string(dataToDisplay)
                 });
             }
