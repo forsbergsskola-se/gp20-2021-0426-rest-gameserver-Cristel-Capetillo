@@ -66,7 +66,7 @@ namespace TinyBrowser._01_Browser {
             }
             
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Website tile: ");
+            Console.WriteLine("Website title: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(title);
             Console.ForegroundColor = ConsoleColor.Magenta;
