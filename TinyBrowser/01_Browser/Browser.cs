@@ -54,10 +54,25 @@ namespace TinyBrowser._01_Browser {
                 }
             }
             
+            var linkTag = "<a href=\"";
+            var linkIndexStarts = response.IndexOf(linkTag);
+            string link = string.Empty;
+            if (linkIndexStarts != -1) {
+                linkIndexStarts += linkTag.Length;
+                var linkIndexEnds = response.IndexOf("</a>");
+                if (linkIndexEnds > linkIndexStarts) {
+                   link = response[linkIndexStarts..linkIndexEnds];
+                }
+            }
+            
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Website tile: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(title);
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("Website links: ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(link);
         }
 
 
