@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
+using TinyBrowser._02_LinksAndTitles;
 
 namespace TinyBrowser._01_Browser {
     public class Browser {
@@ -9,6 +12,7 @@ namespace TinyBrowser._01_Browser {
         string uri = "/";
         int port = 80;
         
+        static AllLinksAndTitles[] links;
 
         public void ClientConnect() {
             tcpClient.Connect(host, port);
@@ -53,33 +57,68 @@ namespace TinyBrowser._01_Browser {
                     title = response[titleIndexStarts..titleIndexEnds];
                 }
             }
-            
-            var linkTag = "<a href=\"";
-            var linkIndexStarts = response.IndexOf(linkTag);
-            string link = string.Empty;
-            if (linkIndexStarts != -1) {
-                linkIndexStarts += linkTag.Length;
-                var linkIndexEnds = response.IndexOf("</a>");
-                if (linkIndexEnds > linkIndexStarts) {
-                   link = response[linkIndexStarts..linkIndexEnds];
-                }
-            }
-            
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Website title: ");
+            Console.WriteLine("Website's title: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(title);
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Website links: ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(link);
+
+           
+            links = FilterAllLinksWithTitles(response).ToArray();
+            DisplayAllLinks();
         }
+        
+        
+        static IEnumerable<AllLinksAndTitles> FilterAllLinksWithTitles(string response) {
+            const string linkTag = "<a href=\"";
+            const char quotationMark = '"';
+            const char linkIndexStarts = '>';
+            const string linkIndexEnds = "</a>";
+            
+            var allLinksList = new List<AllLinksAndTitles>();
+                
+            var arrayFilter = response.Split(linkTag);
+            arrayFilter = arrayFilter.Skip(1).ToArray();
 
-
+            foreach (var dataFiltered in arrayFilter){
+                var hyperlink = dataFiltered.TakeWhile(symbol => symbol != quotationMark).ToArray();
+                var filterAfterHyperlink = dataFiltered[hyperlink.Length..];
+                var filteredDataStartsAt = filterAfterHyperlink.IndexOf(linkIndexStarts) + 1;
+                var filteredDataEndsAt = filterAfterHyperlink.IndexOf(linkIndexEnds, StringComparison.Ordinal);
+                var dataToDisplay = 
+                    filterAfterHyperlink.Substring(filteredDataStartsAt,(filteredDataEndsAt - filteredDataStartsAt))
+                    .Replace("<b>", string.Empty).Replace("</b>", string.Empty);
+                if (dataToDisplay.StartsWith("<img")){
+                    dataToDisplay = "Image";
+                }
+                allLinksList.Add(new AllLinksAndTitles{
+                    links = new string(hyperlink),
+                    displayLinksText = new string(dataToDisplay)
+                });
+            }
+            return allLinksList;
+        }
+        
+        
+        void DisplayAllLinks(){
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("Displaying all links on the website: ");
+            if (links != null){
+                for (var i = 0; i < links.Length; i++){
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"{i}: {links[i].displayLinksText} ({links[i].links})");
+                }   
+            }
+            else{
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("No links found");
+            }
+        }
+        
+        
         public void StopReadWebsite() {
             tcpClient.Close();
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Done reading website\nPress any key to exit");
+            Console.WriteLine("Website content displayed\nPress any key to exit");
             Console.ReadKey();
         }
     }
