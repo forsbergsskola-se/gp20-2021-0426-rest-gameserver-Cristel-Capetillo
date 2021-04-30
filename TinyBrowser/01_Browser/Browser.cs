@@ -94,7 +94,9 @@ namespace TinyBrowser._01_Browser {
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("Type a number from 0 to 68 to go to that link");
                 userInputVerfied = int.TryParse(Console.ReadLine(), out var userNumberChoice);
-                if (userNumberChoice >= 0 && userNumberChoice <= links.Length) continue;
+                if (userNumberChoice >= 0 && userNumberChoice <= links.Length) {
+                    continue;
+                }
                 userInputVerfied = false;
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("The number you typed is not on the list\nPlease type another one");
