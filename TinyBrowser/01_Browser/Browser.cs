@@ -69,10 +69,10 @@ namespace TinyBrowser._01_Browser {
         
         
         static IEnumerable<AllLinksAndTitles> FilterAllLinksWithTitles(string response) {
-            const string linkTag = "<a href=\"";
-            const char quotationMark = '"';
-            const char linkIndexStarts = '>';
-            const string linkIndexEnds = "</a>";
+            var linkTag = "<a href=\"";
+            var quotationMark = '"';
+            var linkIndexStarts = '>';
+            var linkIndexEnds = "</a>";
             
             var allLinksList = new List<AllLinksAndTitles>();
                 
