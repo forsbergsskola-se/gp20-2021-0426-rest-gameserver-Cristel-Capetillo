@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
+using System.Linq;
 using TinyBrowser._02_LinksAndTitles;
 
 namespace TinyBrowser._01_Browser {
