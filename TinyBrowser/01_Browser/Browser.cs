@@ -21,19 +21,17 @@ namespace TinyBrowser._01_Browser {
         public void RequestAndReadWebsite() {
             var networkStream = tcpClient.GetStream();
             var streamWriter = new StreamWriter(networkStream);
-            
 
             string requestedData = "";
             requestedData += "GET / HTTP/1.1\r\n";
             requestedData += "Host: www.acme.com\r\n\r\n";
-           
             
             streamWriter.Write(requestedData);
             streamWriter.Flush();
 
-
             var uriBuilder = new UriBuilder(null, host);
             uriBuilder.Path = uri;
+            
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Displaying opened website: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -120,7 +118,6 @@ namespace TinyBrowser._01_Browser {
             var quotationMark = '"';
             var linkIndexStarts = '>';
             var linkIndexEnds = "</a>";
-            
             var allLinksList = new List<AllLinksAndTitles>();
             var arrayFilter = response.Split(linkTag);
             arrayFilter = arrayFilter.Skip(1).ToArray();
