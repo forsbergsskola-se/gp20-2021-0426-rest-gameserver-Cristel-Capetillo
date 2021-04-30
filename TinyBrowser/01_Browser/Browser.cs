@@ -46,15 +46,13 @@ namespace TinyBrowser._01_Browser {
             var streamReader = new StreamReader(networkStream);
             var response = streamReader.ReadToEnd();
 
-            DisplayWebsiteTitle(response);
-            
+            DisplayWebsitesTitle(response);
             links = FilterAllLinksWithTitles(response).ToArray();
-            
-            DisplayAllLinks();
+            DisplayWebsitesLinks();
         }
 
         
-        void DisplayWebsiteTitle(string response) {
+        void DisplayWebsitesTitle(string response) {
             var titleTag = "<title>";
             var titleIndexStarts = response.IndexOf(titleTag);
             string title = string.Empty;
@@ -74,7 +72,7 @@ namespace TinyBrowser._01_Browser {
         }
         
         
-        void DisplayAllLinks(){
+        void DisplayWebsitesLinks(){
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Displaying all links on the website: ");
             if (links != null){
