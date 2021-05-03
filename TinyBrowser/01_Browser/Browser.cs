@@ -3,76 +3,86 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Linq;
-using System.Text.RegularExpressions;
 using TinyBrowser._02_LinksAndTitles;
 
 namespace TinyBrowser._01_Browser {
-    public class Browser {
-        TcpClient tcpClient = new();
-        string host = "www.acme.com";
-        string uri = "/";
-        int port = 80;
+    public static class Browser {
+        static TcpClient tcpClient;
+        static StreamReader streamReader;
+        static StreamWriter streamWriter;
+        static NetworkStream networkStream;
+        static string host = "www.acme.com";
+        static int port = 80;
         static AllLinksAndTitles[] links;
+        static string path = "/";
 
-        public void ClientConnect() {
-            tcpClient.Connect(host, port);
-        }
-        
-        
-        public void RequestAndReadWebsite() {
-            var networkStream = tcpClient.GetStream();
-            var streamWriter = new StreamWriter(networkStream);
+        public static void BrowserRun() {
+            while (true) {
+                try {
+                    ConnectViaTcp();
+                    RequestWebsite();
 
-            string requestedData = "";
-            requestedData += "GET / HTTP/1.1\r\n";
-            requestedData += "Host: www.acme.com\r\n\r\n";
-            
-            streamWriter.Write(requestedData);
-            streamWriter.Flush();
+                    var getResponse = WebsiteResponse();
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("You are now at page called: ");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(DisplayWebsitesTitle(getResponse));
 
-            var uriBuilder = new UriBuilder(null, host);
-            uriBuilder.Path = uri;
-            
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Displaying opened website: ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(uriBuilder);
-        }
-        
-
-        public void FindTextBetweenTags() {
-            var networkStream = tcpClient.GetStream();
-            var streamReader = new StreamReader(networkStream);
-            var response = streamReader.ReadToEnd();
-
-            DisplayWebsitesTitle(response);
-            links = FilterAllLinksWithTitles(response).ToArray();
-            DisplayWebsitesLinks();
-        }
-
-        
-        void DisplayWebsitesTitle(string response) {
-            var titleTag = "<title>";
-            var titleIndexStarts = response.IndexOf(titleTag);
-            string title = string.Empty;
-            
-            if (titleIndexStarts != -1) {
-                titleIndexStarts += titleTag.Length;
-                var titleIndexEnds = response.IndexOf("</title>");
-                if (titleIndexEnds > titleIndexStarts) {
-                    title = response[titleIndexStarts..titleIndexEnds];
+                    links = FilterAllLinksWithTitles(getResponse).ToArray();
+                    DisplayWebsitesLinks();
+                    ReadUserInput();
+                }
+                catch (Exception exception) {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(exception.Message);
                 }
             }
+        }
+
+        static void ConnectViaTcp() {
+            tcpClient = new TcpClient(host, port);
+            networkStream = tcpClient.GetStream();
+            streamReader = new StreamReader(networkStream);
+            streamWriter = new StreamWriter(networkStream);
+            
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Website's title: ");
+            Console.WriteLine("You are now connected to: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(title);
+            Console.WriteLine(networkStream.Socket.RemoteEndPoint);
         }
         
+        static void RequestWebsite() {
+            var request =  $"GET {path} HTTP/1.1\r\n";
+            request += $"Host: {host}\r\n\r\n";
+
+            streamWriter.AutoFlush = true;
+            streamWriter.Write(request);
+        }
         
-        void DisplayWebsitesLinks(){
+        static string WebsiteResponse() {
+            if (networkStream.CanRead) {
+                var response = streamReader.ReadToEnd();
+                return response;
+            }
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Error: Cannot read this data...");
+            return string.Empty;
+        }
+        
+        static string DisplayWebsitesTitle(string response) {
+            const string startsWith = "<title>";
+            const string endsWith = "</title>";
+
+            var startsAtIndex = response.IndexOf(startsWith, StringComparison.OrdinalIgnoreCase);
+            startsAtIndex += startsWith.Length;
+            var endsAtIndex = response.IndexOf(endsWith, StringComparison.OrdinalIgnoreCase);
+
+            return response[startsAtIndex..endsAtIndex];
+        }
+
+        static void DisplayWebsitesLinks(){
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Displaying all links on the website: ");
+            Console.WriteLine("Displaying all links found on the page: ");
             if (links.Length > 0){
                 for (var i = 0; i < links.Length; i++){
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -85,43 +95,47 @@ namespace TinyBrowser._01_Browser {
             }
         }
 
-        public void ReadUserInput() {
+        static void ReadUserInput() {
             var userInputIsValid = false;
             var userNumberChoice = 0;
             
             while(!userInputIsValid && links.Length > 0) {
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Type a number from 0 to 68 to go to that link");
+                Console.WriteLine($"Type a number from (0-{links.Length-1}) to go to that link");
                 
                 userInputIsValid = int.TryParse(Console.ReadLine(), out userNumberChoice);
+                
                 if (userNumberChoice >= 0 && userNumberChoice <= links.Length -1) {
                     userInputIsValid = true;
                     continue;
                 }
+
                 userInputIsValid = false;
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("The number you typed is not on the list\nPlease type another one");
                 Console.ReadLine();
+
+                DisplayWebsitesLinks();
             }
 
             if (links.Length < 1) {
-                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("This page has no links");
             }
             
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine($"You have typed {userNumberChoice}: {links[userNumberChoice].displayLinksText}.\nConfirm you want to go to that link by pressing any key");
-            Console.ReadKey();
-            DisplayWebsitesLinks();
-        }
-        
-        
-        public void StopReadWebsite() {
-            tcpClient.Close();
-            tcpClient.Dispose();
+            Console.WriteLine("You have typed: ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"{userNumberChoice}\n{links[userNumberChoice].displayLinksText}");
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Press any key to exit");
+            Console.WriteLine("Please confirm you want to go to that link by pressing any key");
             Console.ReadKey();
+            
+            
+            Console.Read();
+            path = links[userNumberChoice].hyperlinks;
+            path = path.TrimStart('/');
+            path = "/" + path;
         }
         
         
