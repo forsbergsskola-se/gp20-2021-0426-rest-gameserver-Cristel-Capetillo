@@ -24,7 +24,7 @@ namespace TinyBrowser._01_Browser {
 
                     var getResponse = WebsiteResponse();
                     Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine("You are now at page called: ");
+                    Console.WriteLine("You are now at the page with the title: ");
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine(DisplayWebsitesTitle(getResponse));
 
@@ -128,7 +128,7 @@ namespace TinyBrowser._01_Browser {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"{userNumberChoice}\n{links[userNumberChoice].displayLinksText}");
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Please confirm you want to go to that link by pressing any key");
+            Console.WriteLine("Please confirm you want to go to that number / link by pressing any key");
             Console.ReadKey();
             
             
