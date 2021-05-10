@@ -360,5 +360,5 @@ MigrationBackup/
 *.*.iml
 
 # Ignore secrets
-/01_Secrets/
-secrets.cs
+.01_Secrets/
+*Secrets.cs
