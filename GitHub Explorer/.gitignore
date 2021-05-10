@@ -358,3 +358,6 @@ MigrationBackup/
 #RiderC#
 .idea/
 *.*.iml
+
+# Class containing token
+*Secrets.cs
