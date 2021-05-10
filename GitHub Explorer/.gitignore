@@ -360,4 +360,4 @@ MigrationBackup/
 *.*.iml
 
 # Exclude everything
-01_Secrets/*
+01_Secrets
