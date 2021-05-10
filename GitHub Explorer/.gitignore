@@ -359,5 +359,6 @@ MigrationBackup/
 .idea/
 *.*.iml
 
-# Exclude everything
-01_Secrets
+# Ignore secrets
+/01_Secrets/
+secrets.cs
