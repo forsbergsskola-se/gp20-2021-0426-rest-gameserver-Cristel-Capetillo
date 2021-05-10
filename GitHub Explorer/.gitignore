@@ -359,5 +359,5 @@ MigrationBackup/
 .idea/
 *.*.iml
 
-# Class containing token
-*Secrets.cs
+# Exclude everything
+01_Secrets/*
