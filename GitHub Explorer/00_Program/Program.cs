@@ -31,6 +31,5 @@ namespace GitHub_Explorer._00_Program {
                 client.Dispose();
             }
         }
-
     }
 }
