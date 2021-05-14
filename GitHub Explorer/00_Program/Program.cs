@@ -44,14 +44,14 @@ namespace GitHub_Explorer._00_Program {
 
             var userResponse = JsonSerializer.Deserialize<UserResponse>(responseData);
            
-            TrimLines();
+            SeparateLines();
             Console.WriteLine(response);
-            TrimLines();
+            SeparateLines();
             Console.WriteLine(responseData);
-            TrimLines();
+            SeparateLines();
         }
 
-        static void TrimLines() {
+        static void SeparateLines() {
             Console.ForegroundColor = ConsoleColor.Green;
             for (int i = 0; i < 3; i++)
                 Console.WriteLine(separator);
