@@ -9,8 +9,7 @@ using GitHub_Explorer._02_User;
 
 namespace GitHub_Explorer._00_Program {
     class Program {
-        
-        static string separator = "**********************************************************************************";
+        static string separator = "<--------------------------------------------------------------------------------->";
         static void Main(string[] args) {
             while (true) {
                 HttpClient client = new HttpClient();
