@@ -2,40 +2,60 @@
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Threading.Tasks;
 using GitHub_Explorer._01_Secrets;
+using GitHub_Explorer._02_User;
 
 namespace GitHub_Explorer._00_Program {
     class Program {
+        
+        static string separator = "**********************************************************************************";
         static void Main(string[] args) {
-            var token = Secrets.Token;
-            
             while (true) {
                 HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Authorization", token);
+                var token = Secrets.Token;
+                
+                
+                client.BaseAddress = new Uri("https://api.github.com/users/");
+                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("GithubExplorer", "1.0"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", token);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Type a GitHub username:");
+                Console.WriteLine("GitHub Explorer ready! \nType a GitHub username:");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 var userInput = Console.ReadLine();
-                client.BaseAddress = new Uri("https://api.github.com/users/");
-                
-                HttpRequestMessage requestingGitHubData = new HttpRequestMessage(HttpMethod.Get, userInput);
-                client.Send(requestingGitHubData);
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Requesting website...");
-                
-                HttpResponseMessage receivingGitHubData = new HttpResponseMessage();
-                var stream = receivingGitHubData.Content.ReadAsStream();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Receiving data from website...");
-                
-                StreamReader streamReader = new StreamReader(stream);
-                var dataReceived = streamReader.ReadToEnd();
-                Console.WriteLine(dataReceived);
-                Console.WriteLine("Finished");
+
+                var task = ReadFromGitHub(userInput, client);
+                task.Wait();
                 
                 client.Dispose();
             }
+        }
+
+        static async Task ReadFromGitHub(string userInput, HttpClient client) {
+            var response = await client.GetAsync(userInput);
+            response.EnsureSuccessStatusCode();
+            var stream = await response.Content.ReadAsStreamAsync();
+
+            var streamReader = new StreamReader(stream);
+            var responseData = await streamReader.ReadToEndAsync();
+
+            var userResponse = JsonSerializer.Deserialize<UserResponse>(responseData);
+           
+            TrimLines();
+            Console.WriteLine(response);
+            TrimLines();
+            Console.WriteLine(responseData);
+            TrimLines();
+        }
+
+        static void TrimLines() {
+            Console.ForegroundColor = ConsoleColor.Green;
+            for (int i = 0; i < 3; i++)
+                Console.WriteLine(separator);
+            Console.ResetColor();
         }
     }
 }
