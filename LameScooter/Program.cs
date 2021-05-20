@@ -8,7 +8,7 @@ namespace LameScooter {
     class Program {
         static async Task Main(string[] args) {
             OfflineLameScooterRental rental = new OfflineLameScooterRental();
-            var count = await rental.GetScooterCountInStation("Orionintie");
+            var count = await rental.GetScooterCountInStation("Luhtimäki");
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Number of scooters available at station: " + count);
         }
