@@ -12,13 +12,13 @@ namespace GitHub_Explorer._02_UserInfo {
 
         public void DisplayUserInfo() {
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Name: " + name);
-            Console.WriteLine("Organisation: " + organisation);
-            Console.WriteLine("Bio: " + bio);
-            Console.WriteLine("Location: " + location);
-            Console.WriteLine("Public repositories: " + publicRepositories);
-            Console.WriteLine("Private repositories: " + privateRepositories);
-            Console.WriteLine("Email: " + email);
+            Console.WriteLine("Name: " + ConsoleColor.Yellow + name);
+            Console.WriteLine("Organisation: " + ConsoleColor.Yellow + organisation);
+            Console.WriteLine("Bio: " + ConsoleColor.Yellow + bio);
+            Console.WriteLine("Location: " + ConsoleColor.Yellow + location);
+            Console.WriteLine("Public repositories: " + ConsoleColor.Yellow + publicRepositories);
+            Console.WriteLine("Private repositories: " + ConsoleColor.Yellow + privateRepositories);
+            Console.WriteLine("Email: " + ConsoleColor.Yellow + email);
             Console.ResetColor();
         }
     }
