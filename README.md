@@ -31,10 +31,10 @@ Each of these grades expects the previous requirements as well as its own requir
 - In the first Exercise, we are not using any HTTP-Classes, but manually using the HTTP-Protocol with a TCP-Client for educational purposes.
 
 ## List of Assignments:
-- 1.My result of TinyBrowser:
+# 1. My result of TinyBrowser:
 ![FinalTinyBrowser](https://user-images.githubusercontent.com/69099899/118999508-9fa5ca00-b98a-11eb-8c10-d3909b64077b.gif)
-- 2.My result of GitHub Explorer:
+# 2.My result of GitHub Explorer:
 ![FinalGitExplorer](https://user-images.githubusercontent.com/69099899/118999599-b1876d00-b98a-11eb-80a2-4124f464f675.gif)
-- 3. [Lame Scooter](assignments/assignment3.md)
+# 3.My result of LameScooter:
 - 4. [MMO-RPG Pre-Production](assignments/assignment4-preproduction.md)
 - 5. [MMO-RPG](assignments/assignment4.md)
