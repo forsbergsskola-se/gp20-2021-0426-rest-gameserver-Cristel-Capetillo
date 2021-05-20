@@ -36,7 +36,7 @@ namespace GitHub_Explorer._00_Program {
                     repoTask.Wait();
                 }
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Closing client.");
+                Console.WriteLine("All information has been displayed");
                 client.Dispose();
             }
         }
