@@ -18,7 +18,7 @@ namespace LameScooter {
         Task<int> GetScooterCountInStation(string stationName);
     }
 
-    public abstract class OfflineLameScooterRental : ILameScooterRental {
+    public class OfflineLameScooterRental : ILameScooterRental {
         public async Task<int> GetScooterCountInStation(string stationName) {
             var file = await File.ReadAllTextAsync("Scooters.json");
 
