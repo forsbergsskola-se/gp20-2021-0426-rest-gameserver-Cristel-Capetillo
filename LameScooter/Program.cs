@@ -7,10 +7,12 @@ using Newtonsoft.Json;
 namespace LameScooter {
     class Program {
         static async Task Main(string[] args) {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("LameScooter is loading information...");
             OfflineLameScooterRental rental = new OfflineLameScooterRental();
-            var count = await rental.GetScooterCountInStation("Luhtimäki");
+            var count = await rental.GetScooterCountInStation(stationName:"Luhtimäki");
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Number of scooters available at station: " + count);
+            Console.WriteLine("Number of scooters available at Luhtimäki station: " + count);
         }
     }
 
