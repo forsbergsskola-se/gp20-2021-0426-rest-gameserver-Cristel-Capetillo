@@ -1,39 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GitHub_Explorer._01_Secrets;
+using GitHub_Explorer._02_UserInfo;
 
 namespace GitHub_Explorer._00_Program {
-    
-    public class UserResponse {
-        public string name { get; set; }
-        public string company { get; set; }
-        public string location { get; set; }
-        public string email { get; set; }
-        public string bio { get; set; }
-        public int public_repos { get; set; }
-        public int private_Repos { get; set; }
-
-        public void DisplayUserInfo() {
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Name: " + name);
-            Console.WriteLine("Company: " + company);
-            Console.WriteLine("Bio: " + bio);
-            Console.WriteLine("Location: " + location);
-            Console.WriteLine("Private repos: " + private_Repos);
-            Console.WriteLine("public repos: " + public_repos);
-            Console.WriteLine("Email: " + email);
-            Console.ResetColor();
-        }
-    }
-
-    public class UserRepos {
-        
-    }
-    
     class Program {
         static string separator = "******************************";
         static void Main(string[] args) {
@@ -43,18 +18,18 @@ namespace GitHub_Explorer._00_Program {
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("GitHub Explorer ready! \nType a GitHub username:");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                var userInput = Console.ReadLine();
+                var userFirstInput = Console.ReadLine();
 
-                var userTask = ReadFromGitHub(userInput, client, false);
+                var userTask = ReadFromGitHub(userFirstInput, client, false);
                 userTask.Wait();
                 
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("Enter \"1\" to go to repositories");
-                Console.WriteLine("Enter any other input to exit");
+                Console.WriteLine("Enter any other key to exit");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                userInput = Console.ReadLine();
-                if (userInput == "1") {
-                    var url = userInput + "/repos";
+                var userSecondInput = Console.ReadLine();
+                if (userSecondInput == "1") {
+                    var url = userFirstInput + "/repos";
                     var repoTask = ReadFromGitHub(url, client, true);
                     repoTask.Wait();
                 }
@@ -72,18 +47,21 @@ namespace GitHub_Explorer._00_Program {
             var streamReader = new StreamReader(stream);
             var responseData = await streamReader.ReadToEndAsync();
 
-            UserResponse userResponse;
             if (repos) {
-               userResponse = JsonSerializer.Deserialize<UserResponse>(responseData); 
+                Console.WriteLine(responseData);
+                var userRepos = JsonSerializer.Deserialize<List<UserRepository>>(responseData);
+                SeparateLines();
+                foreach (var repo in userRepos) {
+                    repo.DisplayRepoInfo();
+                }
+                SeparateLines();
             }
             else {
-               userResponse = JsonSerializer.Deserialize<UserResponse>(responseData);
+                var userPageInformation = JsonSerializer.Deserialize<UserPageInformation>(responseData);
+                SeparateLines();
+                userPageInformation.DisplayUserInfo();
+                SeparateLines();
             }
-           
-            SeparateLines();
-            if (userResponse != null)
-                userResponse.DisplayUserInfo();
-            SeparateLines();
         }
 
         static void SeparateLines() {
