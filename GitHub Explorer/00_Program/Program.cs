@@ -15,8 +15,10 @@ namespace GitHub_Explorer._00_Program {
             while (true) {
                 var client = HttpClientSettings();
                 
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("GitHub Explorer ready to use!");
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("GitHub Explorer ready! \nType a GitHub username:");
+                Console.WriteLine("Type a GitHub username to search for:");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 var userFirstInput = Console.ReadLine();
 
