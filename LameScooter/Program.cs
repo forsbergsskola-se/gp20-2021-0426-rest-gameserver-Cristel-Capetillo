@@ -35,7 +35,7 @@ namespace LameScooter {
                 return;
             }
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write($"Number of scooters at this station ({args[0]}): {count}");
+            Console.Write($"Number of scooters available at this station ({args[0]}): {count}");
         }
     }
 }
