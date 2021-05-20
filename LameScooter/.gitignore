@@ -122,11 +122,6 @@ $tf/
 # Guidance Automation Toolkit
 *.gpState
 
-# Jetbrain Rider Cache
-.idea/
-.obj
-Assets/Plugins/Editor/JetBrains*
-
 # ReSharper is a .NET coding add-in
 _ReSharper*/
 *.[Rr]e[Ss]harper
@@ -354,8 +349,3 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 .idea
-
-#RiderC#
-.idea/
-*.*.iml
-
