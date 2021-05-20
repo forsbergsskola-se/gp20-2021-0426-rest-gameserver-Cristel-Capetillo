@@ -11,7 +11,7 @@ namespace GitHub_Explorer._02_UserInfo {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Name: " + name);
             Console.WriteLine("Description: " + description);
-            Console.WriteLine("Last push: " + LastPush);
+            Console.WriteLine("Last updated: " + LastPush);
             Console.ResetColor();
         }
     }
