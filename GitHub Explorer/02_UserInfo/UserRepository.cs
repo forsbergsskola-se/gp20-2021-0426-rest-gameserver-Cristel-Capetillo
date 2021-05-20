@@ -9,9 +9,9 @@ namespace GitHub_Explorer._02_UserInfo {
 
         public void DisplayRepoInfo() {
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Name: " + ConsoleColor.Yellow + name);
-            Console.WriteLine("Description: " + ConsoleColor.Yellow + description);
-            Console.WriteLine("Last updated: " + ConsoleColor.Yellow + LastPush);
+            Console.WriteLine("Name: " + name);
+            Console.WriteLine("Description: "  + description);
+            Console.WriteLine("Last updated: " + LastPush);
             Console.ResetColor();
         }
     }

@@ -51,15 +51,17 @@ namespace GitHub_Explorer._00_Program {
                 Console.WriteLine(responseData);
                 var userRepos = JsonSerializer.Deserialize<List<UserRepository>>(responseData);
                 SeparateLines();
-                foreach (var repo in userRepos) {
-                    repo.DisplayRepoInfo();
-                }
+                if (userRepos != null)
+                    foreach (var repo in userRepos) {
+                        repo.DisplayRepoInfo();
+                    }
                 SeparateLines();
             }
             else {
                 var userPageInformation = JsonSerializer.Deserialize<UserPageInformation>(responseData);
                 SeparateLines();
-                userPageInformation.DisplayUserInfo();
+                if (userPageInformation != null)
+                    userPageInformation.DisplayUserInfo();
                 SeparateLines();
             }
         }
