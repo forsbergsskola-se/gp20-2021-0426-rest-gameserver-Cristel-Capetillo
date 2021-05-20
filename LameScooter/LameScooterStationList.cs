@@ -1,6 +1,7 @@
-﻿namespace LameScooter {
+﻿using System.Collections.Generic;
+
+namespace LameScooter {
     public class LameScooterStationList {
-        public string Name{ get; set; }
-        public int BikesAvailable{ get; set; }
+        public List<LameScooterStation> stations { get; set; }
     }
 }

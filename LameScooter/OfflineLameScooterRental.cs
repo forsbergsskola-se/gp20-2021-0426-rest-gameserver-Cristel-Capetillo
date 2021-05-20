@@ -1,28 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LameScooter {
-    public class OfflineLameScooterRental: ILameScooterRental {
+    class DeprecatedLameScooterRental : ILameScooterRental {
+        public Task<int> GetScooterCountInStation(string stationName) {
+            throw new NotImplementedException();
+        }
+    }
+    public class OfflineLameScooterRental : ILameScooterRental {
+        public string path = "scooters.json";
+
         public async Task<int> GetScooterCountInStation(string stationName) {
-            if (stationName.Any(char.IsDigit)) {
-                Console.ForegroundColor = ConsoleColor.Red;
-                throw new ArgumentException("The station name cannot contain a number");
+            using var sr = new StreamReader(Path.Combine(Environment.CurrentDirectory, path));
+            var file = JsonSerializer.Deserialize<LameScooterStationList>(await sr.ReadToEndAsync());
+
+            foreach (var station in file.stations) {
+                if (stationName == station.name) {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine($"{station.name} station has these amount of available scooters:");
+                    return station.bikesAvailable;
+                }
             }
-            
-            var reader = new StreamReader("scooters.json");
-            
-            var jsonString = await reader.ReadToEndAsync();
-            var scooterStations = JsonSerializer.Deserialize<List<LameScooterStationList>>(jsonString,new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
-            
-            if(scooterStations?.Find(station=>station.Name == stationName) == null) {
-                Console.ForegroundColor = ConsoleColor.Red;
-                throw new NotFoundException($"Could not find the station: {stationName}");
-            }
-            return scooterStations.Where(station => station.Name == stationName).Select(station => station.BikesAvailable).FirstOrDefault();
+            var notFoundException = new Exception("Cannot find the station: " + stationName);
+            throw notFoundException;
         }
     }
 }

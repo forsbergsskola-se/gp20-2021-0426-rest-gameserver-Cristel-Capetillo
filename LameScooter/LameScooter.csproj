@@ -9,13 +9,9 @@
     <None Update="scooters.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="scooters.txt">
+    <None Update="scooters.txt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.12.3" />
   </ItemGroup>
 
 </Project>
