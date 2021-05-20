@@ -6,12 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="scooters.json">
+    <None Update="Scooters.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="scooters.txt.txt">
+    <None Update="Scooters.txt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>
