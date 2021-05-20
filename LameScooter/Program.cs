@@ -18,17 +18,18 @@ namespace LameScooter {
         Task<int> GetScooterCountInStation(string stationName);
     }
 
-    public class OfflineLameScooterRental : ILameScooterRental {
+    public abstract class OfflineLameScooterRental : ILameScooterRental {
         public async Task<int> GetScooterCountInStation(string stationName) {
             var file = await File.ReadAllTextAsync("Scooters.json");
 
-            var jsonObject = JsonConvert.DeserializeObject<LameScooterStationList>(file);
+            var convertToJson = JsonConvert.DeserializeObject<LameScooterStationList>(file);
 
-            foreach (var station in jsonObject.Stations) {
-                if (station.name == stationName) {
-                    return station.bikesAvailable;
+            if (convertToJson != null)
+                foreach (var station in convertToJson.Stations) {
+                    if (station.name == stationName) {
+                        return station.bikesAvailable;
+                    }
                 }
-            }
             return default;
         }
 
