@@ -32,10 +32,10 @@ Each of these grades expects the previous requirements as well as its own requir
 
 ## List of Assignments:
 - 1. [Tiny Browser](assignments/assignment1.md)
-- My TinyBrowser:
+*My TinyBrowser:
 ![FinalTinyBrowser](https://user-images.githubusercontent.com/69099899/118999508-9fa5ca00-b98a-11eb-8c10-d3909b64077b.gif)
 - 2. [Github Explorer](assignments/assignment2.md)
-- My GitHub Explorer:
+*My GitHub Explorer:
 ![FinalGitExplorer](https://user-images.githubusercontent.com/69099899/118999599-b1876d00-b98a-11eb-80a2-4124f464f675.gif)
 - 3. [Lame Scooter](assignments/assignment3.md)
 - 4. [MMO-RPG Pre-Production](assignments/assignment4-preproduction.md)
