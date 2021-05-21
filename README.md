@@ -1,4 +1,3 @@
-![FinalLame](https://user-images.githubusercontent.com/69099899/119145798-469d6b00-ba4a-11eb-9841-e9df4502e33f.gif)
 # GP20-2021-0426-Rest-Gameserver
 
 ## Goal of this Assignment
