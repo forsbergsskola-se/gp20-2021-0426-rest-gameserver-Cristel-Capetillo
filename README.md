@@ -1,3 +1,4 @@
+![FinalLame](https://user-images.githubusercontent.com/69099899/119145798-469d6b00-ba4a-11eb-9841-e9df4502e33f.gif)
 # GP20-2021-0426-Rest-Gameserver
 
 ## Goal of this Assignment
@@ -36,5 +37,7 @@ Each of these grades expects the previous requirements as well as its own requir
 # 2.My result of GitHub Explorer:
 ![FinalGitExplorer](https://user-images.githubusercontent.com/69099899/118999599-b1876d00-b98a-11eb-80a2-4124f464f675.gif)
 # 3.My result of LameScooter:
+![FinalLame](https://user-images.githubusercontent.com/69099899/119145829-5026d300-ba4a-11eb-9d9d-669269a26ec5.gif)
+
 - 4. [MMO-RPG Pre-Production](assignments/assignment4-preproduction.md)
 - 5. [MMO-RPG](assignments/assignment4.md)
